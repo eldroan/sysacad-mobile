@@ -3,5 +3,6 @@
         "activityBar.background": "#2B3004",
         "titleBar.activeBackground": "#3C4406",
         "titleBar.activeForeground": "#F9FCDD"
-    }
+    },
+    "react-native.packager.port": 19001,
 }
