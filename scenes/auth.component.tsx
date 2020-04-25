@@ -1,12 +1,5 @@
 import React, { useState, useEffect } from "react";
-import {
-  StyleSheet,
-  View,
-  ActivityIndicator,
-  Linking,
-  Alert,
-  Platform,
-} from "react-native";
+import { StyleSheet, View, ActivityIndicator, Linking } from "react-native";
 import {
   Text,
   Button,
@@ -39,33 +32,18 @@ export const AuthScreen = ({
   const [password, setPassword] = useState("");
   const [secureTextEntry, setSecureTextEntry] = useState(true);
   const [loginPressed, setLoginPressed] = useState(false);
-  const [webModal, setWebModal] = useState(false);
-  const [responseStatus, setResponseStatus] = useState(0);
-  const [responseMessage, setResponseMessage] = useState("");
+  const [modal, setModal] = useState({ show: false, title: "", message: "" });
 
   // Handle login button presses
   // useEffect makes sure it runs once no matter how many times the button is pressed
   useEffect(() => {
     if (loginPressed) {
       login(legajo, password).then((res) => {
-        if (Platform.OS == "web") {
-          setResponseMessage(res.message);
-          setResponseStatus(res.status);
-          setWebModal(true);
-        } else {
-          Alert.alert(
-            `status: ${res.status}`,
-            `alumno: ${res.message}`,
-            [
-              {
-                text: "Ok",
-                onPress: () => {},
-                style: "default",
-              },
-            ],
-            { cancelable: true }
-          );
-        }
+        setModal({
+          show: true,
+          title: res.status.toString(),
+          message: res.message,
+        });
         setLoginPressed(false);
       });
     }
@@ -83,16 +61,24 @@ export const AuthScreen = ({
 
   return (
     <Layout level="1" style={styles.container}>
-      {/* Web modal*/}
+      {/* ERROR MODAL */}
       <Modal
-        visible={webModal}
+        visible={modal.show}
         backdropStyle={styles.backdrop}
-        onBackdropPress={() => setWebModal(false)}
+        onBackdropPress={() =>
+          setModal({ show: false, title: "", message: "" })
+        }
       >
         <Card disabled={true}>
-          <Text category="h6">{`Status: ${responseStatus}`}</Text>
-          <Text>{`Alumno: ${responseMessage}`}</Text>
-          <Button onPress={() => setWebModal(false)}>OK</Button>
+          <Text category="h6">{modal.title}</Text>
+          <TinyHorizontalSpacer />
+          <Text>{modal.message}</Text>
+          <SmallHorizontalSpacer />
+          <Button
+            onPress={() => setModal({ show: false, title: "", message: "" })}
+          >
+            OK
+          </Button>
         </Card>
       </Modal>
       {/* HEADER */}

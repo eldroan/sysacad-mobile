@@ -1,6 +1,5 @@
 import axios, { AxiosRequestConfig } from "axios";
 import { Base64 } from "js-base64";
-// import AsyncStorage from "@react-native-community/async-storage";
 import { NetworkResponse, Login } from "../models/response";
 
 const sysacad_api = {
@@ -29,7 +28,6 @@ export const login = async (
 ): Promise<{ status: number; message: string }> => {
   try {
     const token = Base64.encode(`${legajo}:${password}`);
-    // await AsyncStorage.setItem(sysacad_api.token_key, token);
 
     const res = (
       await axios.get<NetworkResponse<Login>>(
@@ -42,10 +40,17 @@ export const login = async (
 
     return {
       status: res.status,
-      message: res.status === 200 ? res.response?.alumno ?? "" : res.message,
+      message: res.response?.alumno ?? "",
     };
-  } catch (e) {
-    console.log(e);
-    return { status: 500, message: "Algo salio mal" };
+  } catch (error) {
+    if (error?.response?.data ?? false) {
+      //Error conocido
+      return {
+        status: error.response.data.status,
+        message: error.response.data.message,
+      };
+    } else {
+      return { status: 500, message: "Algo salio mal" };
+    }
   }
 };
