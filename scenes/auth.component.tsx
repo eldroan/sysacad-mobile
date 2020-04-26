@@ -1,5 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { StyleSheet, View, ActivityIndicator, Linking } from "react-native";
+import {
+  StyleSheet,
+  View,
+  ActivityIndicator,
+  Linking,
+  Platform,
+} from "react-native";
 import {
   Text,
   Button,
@@ -140,6 +146,12 @@ export const AuthScreen = ({
           ERRORES? QUERÉS COLABORAR?
         </Button>
         <TinyHorizontalSpacer />
+        <Text appearance="hint" style={styles.infoText}>
+          Esta aplicación no tiene soporte oficial de la UTN FRSF. El código de
+          la aplicación y de la API utilizada son públicos y pueden ser vistos
+          en github.
+        </Text>
+        <TinyHorizontalSpacer />
         <Text appearance="hint" style={styles.centeredText}>
           {`V ${expo.version}`}
         </Text>
@@ -168,6 +180,10 @@ const styles = StyleSheet.create({
   },
   centeredText: {
     textAlign: "center",
+  },
+  infoText: {
+    textAlign: Platform.OS == "web" ? "center" : "justify",
+    paddingHorizontal: padding.medium,
   },
   indicator: {
     justifyContent: "center",
