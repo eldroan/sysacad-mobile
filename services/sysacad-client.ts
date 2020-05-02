@@ -1,6 +1,6 @@
 import axios, { AxiosRequestConfig } from "axios";
 import { Base64 } from "js-base64";
-import { NetworkResponse, Login } from "../models/response";
+import { LoginResponse } from "../models/response";
 
 const sysacad_api = {
   token_key: "SYSACADMOBILE",
@@ -26,22 +26,24 @@ export const MockRequest = async (
 export const login = async (
   legajo: string,
   password: string
-): Promise<{ status: number; message: string }> => {
+): Promise<{ status: number; message: string; alumno?: string; token?: string }> => {
   try {
     const token = Base64.encode(`${legajo}:${password}`);
 
     const res = (
-      await axios.get<NetworkResponse<Login>>(
+      await axios.get<LoginResponse>(
         `${sysacad_api.base}${sysacad_api.login}`,
         {
           headers: { Authorization: `Basic ${token}` },
         }
       )
     ).data;
-
+    console.log(res);
     return {
       status: res.status,
-      message: res.response?.alumno ?? "",
+      message: "",
+      alumno: res.alumno ?? "",
+      token,
     };
   } catch (error) {
     if (error?.response?.data ?? false) {

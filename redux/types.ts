@@ -14,6 +14,7 @@ export enum AUTH_ACTION_TYPES {
   SIGN_IN = "AUTH/SIGN_IN",
   SIGN_OUT = "AUTH/SIGN_OUT",
 }
+export const SYSACAD_TOKEN_KEY = "@SYSACADTOKENKEY";
 
 export type SignInAction = {
   type: string;

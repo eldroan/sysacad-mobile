@@ -33,7 +33,7 @@ import {
 import { expo } from "../app.json";
 import { login } from "../services/sysacad-client";
 import { useDispatch } from "react-redux";
-import { signIn } from "../redux/auth/actions";
+import { SignIn } from "../redux/auth/actions";
 
 export const AuthScreen = ({
   navigation,
@@ -51,12 +51,11 @@ export const AuthScreen = ({
       login(legajo, password).then((res) => {
         setLoginPressed(false);
         if (res.status == 200) {
-          dispatch(signIn(res.message));
-          navigation.navigate(AppRoute.HOME);
+          dispatch(SignIn(res.alumno ?? "", res.token ?? "", navigation));
         } else {
           setModal({
             show: true,
-            title: 'Algo salio mal...',
+            title: "Algo salio mal...",
             message: res.message,
           });
         }
@@ -94,7 +93,7 @@ export const AuthScreen = ({
           >
             OK
           </Button>
-          <TinyHorizontalSpacer/>
+          <TinyHorizontalSpacer />
         </Card>
       </Modal>
       {/* HEADER */}
