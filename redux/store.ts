@@ -1,10 +1,12 @@
 import { combineReducers, createStore, applyMiddleware } from "redux";
 import thunk from "redux-thunk";
 import { ApplicationState } from "./types";
-import { auth } from "./auth/reducer";
+import { authSlice } from "./auth/reducer";
+import { examenesSlice } from "./examenes/reducer";
 
 const reducers = combineReducers<ApplicationState>({
-  auth,
+  auth: authSlice,
+  examenes: examenesSlice,
 });
 
 export default createStore(reducers, applyMiddleware(thunk));

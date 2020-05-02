@@ -7,7 +7,7 @@ import {
 
 const initialState: AuthState = {};
 
-export const auth = (
+export const authSlice = (
   state: AuthState = initialState,
   action: AuthAction
 ): AuthState => {

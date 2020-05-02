@@ -36,8 +36,6 @@ export const SignIn = (
       navigation.navigate(AppRoute.HOME);
       dispatch(signIn(nombreAlumno));
     } catch (error) {
-      console.log(error);
-      console.log("Algo malio sal");
     }
   };
 };

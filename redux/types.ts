@@ -1,13 +1,12 @@
+import { Especialidad } from "./../models/especialidad";
+import { Examen } from "./../models/examen";
+import { Alumno } from "../models/alumno";
+
 export type ApplicationState = {
   auth: AuthState;
+  examenes: ExamenesState;
   // add future state slices here
 };
-
-//--------- Begin: Data types ---------//
-export type Alumno = {
-  nombre: string;
-};
-//--------- End: Data types ---------//
 
 //--------- Begin: Auth Slice ---------//
 export enum AUTH_ACTION_TYPES {
@@ -31,3 +30,36 @@ export type AuthState = {
   alumno?: Alumno;
 };
 //--------- End: Auth Slice ---------//
+//--------- Begin: Examenes Slice ---------//
+export enum EXAMENES_ACTION_TYPES {
+  EXAMENES_ALUMNO = "EXAMENES/EXAMENES_ALUMNO",
+  EXAMENES_REQUEST_IN_PROGRESS = "EXAMENES/EXAMENES_REQUEST_IN_PROGRESS",
+}
+
+export type ExamenesAlumnoAction = {
+  type: string;
+  examenes: Examen[];
+  especialidades: Especialidad[];
+  aprobados: number;
+  promedioConAplazo: number;
+  promedioSinAplazo: number;
+};
+
+export type ExamenesRequestInProgresAction = {
+  type: string;
+  inProgress: boolean;
+};
+
+export type ExamenesAction =
+  | ExamenesAlumnoAction
+  | ExamenesRequestInProgresAction;
+
+export type ExamenesState = {
+  examenes: Examen[];
+  especialidades: Especialidad[];
+  aprobados: number;
+  promedioConAplazo: number;
+  promedioSinAplazo: number;
+  requestInProgress: boolean;
+};
+//--------- End: Examenes Slice ---------//
