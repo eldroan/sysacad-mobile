@@ -27,9 +27,13 @@ import { padding, bigScreens } from "../assets/uispec";
 import {
   TinyHorizontalSpacer,
   SmallHorizontalSpacer,
+  MediumHorizontalSpacer,
+  LargeHorizontalSpacer,
 } from "../components/spacers.component";
 import { expo } from "../app.json";
 import { login } from "../services/sysacad-client";
+import { useDispatch } from "react-redux";
+import { signIn } from "../redux/auth/actions";
 
 export const AuthScreen = ({
   navigation,
@@ -39,18 +43,23 @@ export const AuthScreen = ({
   const [secureTextEntry, setSecureTextEntry] = useState(true);
   const [loginPressed, setLoginPressed] = useState(false);
   const [modal, setModal] = useState({ show: false, title: "", message: "" });
-
+  const dispatch = useDispatch();
   // Handle login button presses
   // useEffect makes sure it runs once no matter how many times the button is pressed
   useEffect(() => {
     if (loginPressed) {
       login(legajo, password).then((res) => {
-        setModal({
-          show: true,
-          title: res.status.toString(),
-          message: res.message,
-        });
         setLoginPressed(false);
+        if (res.status == 200) {
+          dispatch(signIn(res.message));
+          navigation.navigate(AppRoute.HOME);
+        } else {
+          setModal({
+            show: true,
+            title: 'Algo salio mal...',
+            message: res.message,
+          });
+        }
       });
     }
   }, [loginPressed]);
@@ -77,14 +86,15 @@ export const AuthScreen = ({
       >
         <Card disabled={true}>
           <Text category="h6">{modal.title}</Text>
-          <TinyHorizontalSpacer />
+          <MediumHorizontalSpacer />
           <Text>{modal.message}</Text>
-          <SmallHorizontalSpacer />
+          <MediumHorizontalSpacer />
           <Button
             onPress={() => setModal({ show: false, title: "", message: "" })}
           >
             OK
           </Button>
+          <TinyHorizontalSpacer/>
         </Card>
       </Modal>
       {/* HEADER */}

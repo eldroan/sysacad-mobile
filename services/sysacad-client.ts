@@ -5,7 +5,8 @@ import { NetworkResponse, Login } from "../models/response";
 const sysacad_api = {
   token_key: "SYSACADMOBILE",
   base: "https://sysacad-api.herokuapp.com/",
-  login: "login",
+  // base: "http://localhost:3000/",
+  login: "alumno",
 };
 
 export const MockRequest = async (
