@@ -34,6 +34,7 @@ import {
 import { ExamenesAlumno } from "../redux/examenes/actions";
 import { Examen } from "../models/examen";
 import { Especialidad } from "../models/especialidad";
+import { ScrollView } from "react-native-gesture-handler";
 
 export const HomeScreen = ({
   navigation,
@@ -69,7 +70,28 @@ export const HomeScreen = ({
       <SafeAreaLayout style={styles.header} insets={SaveAreaInset.TOP}>
         <Text category="h1">INFORMACIÓN</Text>
       </SafeAreaLayout>
-      <Layout style={Platform.OS == "web" ? { alignItems: "center" } : {}}>
+
+      {/* Por alguna extraña razon no funciona bien List en web*/}
+      {Platform.OS == "web" ? (
+        <Layout level='2' style={{flex:1}}>
+          <ScrollView>
+            <ExamenListHeader
+              especialidades={especialidades}
+              nombre={nombre}
+              aprobadas={aprobados}
+              totales={examenes.length}
+              promedioConAplazo={promedioConAplazo}
+              promedioSinAplazo={promedioSinAplazo}
+              requestInProgress={requestInProgress}
+              checked={onlyShowAprobadas}
+              setChecked={setOnlyShowAprobadas}
+            />
+            {examenes.map((e) => (
+              <ExamenCard examen={e} visible={isVisible(e)} />
+            ))}
+          </ScrollView>
+        </Layout>
+      ) : (
         <List
           data={examenes}
           showsVerticalScrollIndicator={false}
@@ -90,8 +112,10 @@ export const HomeScreen = ({
             <ExamenCard examen={e.item} visible={isVisible(e.item)} />
           )}
         />
-      </Layout>
+      )}
     </Layout>
+
+    // </Layout>
   );
 };
 
@@ -101,13 +125,7 @@ const styles = StyleSheet.create({
     paddingTop: padding.large,
     paddingBottom: padding.tiny,
   },
-  container: {
-    flex: 1,
-  },
-  content: {
-    flex: 1,
-    paddingHorizontal: padding.medium,
-  },
+  container: { flex: 1 },
   headerTextStyle: { textTransform: "uppercase" },
 });
 
@@ -296,7 +314,7 @@ const ExamenListHeader = ({
 
       {/* SPINNER QUE SE MUESTRA CUANDO SE ESTAN PIDIENDO LOS DATOS */}
       {requestInProgress && (
-        <Layout>
+        <Layout level="2">
           <SmallHorizontalSpacer />
           <ActivityIndicator size="large" />
           <Text category="c1" appearance="hint" style={{ textAlign: "center" }}>
