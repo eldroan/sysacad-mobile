@@ -45,7 +45,7 @@ export const ExamenesAlumno = (): ThunkAction<
       dispatch(
         examenesAlumno(
           response.aprobadas,
-          examenes,
+          examenes.reverse(),
           especialidades,
           response.promedioConAplazo,
           response.promedioSinAplazo
