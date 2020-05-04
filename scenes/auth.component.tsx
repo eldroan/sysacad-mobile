@@ -1,5 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { StyleSheet, View, ActivityIndicator, Linking } from "react-native";
+import {
+  StyleSheet,
+  View,
+  ActivityIndicator,
+  Linking,
+  Platform,
+} from "react-native";
 import {
   Text,
   Button,
@@ -21,9 +27,13 @@ import { padding, bigScreens } from "../assets/uispec";
 import {
   TinyHorizontalSpacer,
   SmallHorizontalSpacer,
+  MediumHorizontalSpacer,
+  LargeHorizontalSpacer,
 } from "../components/spacers.component";
 import { expo } from "../app.json";
 import { login } from "../services/sysacad-client";
+import { useDispatch } from "react-redux";
+import { SignIn } from "../redux/auth/actions";
 
 export const AuthScreen = ({
   navigation,
@@ -33,18 +43,22 @@ export const AuthScreen = ({
   const [secureTextEntry, setSecureTextEntry] = useState(true);
   const [loginPressed, setLoginPressed] = useState(false);
   const [modal, setModal] = useState({ show: false, title: "", message: "" });
-
+  const dispatch = useDispatch();
   // Handle login button presses
   // useEffect makes sure it runs once no matter how many times the button is pressed
   useEffect(() => {
     if (loginPressed) {
       login(legajo, password).then((res) => {
-        setModal({
-          show: true,
-          title: res.status.toString(),
-          message: res.message,
-        });
         setLoginPressed(false);
+        if (res.status == 200) {
+          dispatch(SignIn(res.alumno ?? "", res.token ?? "", navigation));
+        } else {
+          setModal({
+            show: true,
+            title: "Algo salio mal...",
+            message: res.message,
+          });
+        }
       });
     }
   }, [loginPressed]);
@@ -71,14 +85,15 @@ export const AuthScreen = ({
       >
         <Card disabled={true}>
           <Text category="h6">{modal.title}</Text>
-          <TinyHorizontalSpacer />
+          <MediumHorizontalSpacer />
           <Text>{modal.message}</Text>
-          <SmallHorizontalSpacer />
+          <MediumHorizontalSpacer />
           <Button
             onPress={() => setModal({ show: false, title: "", message: "" })}
           >
             OK
           </Button>
+          <TinyHorizontalSpacer />
         </Card>
       </Modal>
       {/* HEADER */}
@@ -140,6 +155,12 @@ export const AuthScreen = ({
           ERRORES? QUERÉS COLABORAR?
         </Button>
         <TinyHorizontalSpacer />
+        <Text appearance="hint" style={styles.infoText}>
+          Esta aplicación no tiene soporte oficial de la UTN FRSF. El código de
+          la aplicación y de la API utilizada son públicos y pueden ser vistos
+          en github.
+        </Text>
+        <TinyHorizontalSpacer />
         <Text appearance="hint" style={styles.centeredText}>
           {`V ${expo.version}`}
         </Text>
@@ -168,6 +189,10 @@ const styles = StyleSheet.create({
   },
   centeredText: {
     textAlign: "center",
+  },
+  infoText: {
+    textAlign: Platform.OS == "web" ? "center" : "justify",
+    paddingHorizontal: padding.medium,
   },
   indicator: {
     justifyContent: "center",

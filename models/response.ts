@@ -1,10 +1,14 @@
-export type NetworkResponse<T> = {
+import { Examenes } from "./examenes";
+
+export type BaseResponse = {
   status: number;
   message: string;
-  response?: T;
 };
 
-export type Login = {
+export type LoginResponse = BaseResponse & {
   alumno: string;
-  rutas: Array<{ titulo: string; ruta: string }>;
+};
+
+export type ExamenResponse = BaseResponse & {
+  response: Examenes;
 };
