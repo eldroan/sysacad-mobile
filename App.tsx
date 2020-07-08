@@ -6,10 +6,12 @@ import { AppNavigator } from "./navigation/app.navigator";
 import { NavigationContainer } from "@react-navigation/native";
 import { Provider } from "react-redux";
 import store from "./redux/store";
+import { StatusBar } from "react-native";
 
 const App = (): React.ReactFragment => {
   return (
     <Provider store={store}>
+      <StatusBar barStyle="light-content" />
       <IconRegistry icons={EvaIconsPack} />
       <ApplicationProvider mapping={mapping} theme={dark}>
         <NavigationContainer>

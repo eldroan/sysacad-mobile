@@ -1,7 +1,8 @@
 {
   "expo": {
-    "name": "HelloWorld",
-    "slug": "sysacad-port",
+    "name": "Estudiantes UTN FRSF",
+    "slug": "estudiantes-utn-frsf-sysacad",
+    
     "platforms": [
       "ios",
       "android",
@@ -13,7 +14,7 @@
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#212B43"
     },
     "updates": {
       "fallbackToCacheTimeout": 0
@@ -22,7 +23,15 @@
       "**/*"
     ],
     "ios": {
+      "bundleIdentifier": "ar.com.leandroamarillo.estudiantesutnfrsf",
+      "buildNumber": "1.0.0",
       "supportsTablet": true
-    }
+
+    },
+    "android": {
+      "package": "ar.com.leandroamarillo.estudiantesutnfrsf",
+      "versionCode": 1
+    },
+    "description": ""
   }
 }
